@@ -1,0 +1,63 @@
+apply from: 'dependencies.gradle'
+
+// child project all use this config
+allprojects {
+    apply plugin: 'java-library'
+    apply plugin: "maven-publish"
+
+    group = 'com.github.kuangcp'
+    // all module use the same version
+    version = '1.0.4'
+
+    // default build dir is build/ but idea compile dir is out/, i'm dislike this way
+    // dir out/ just have production/ and test/ dir
+    buildDir = 'out/build'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+
+        def aliYun = "http://maven.aliyun.com/nexus/content/groups/public/"
+        def abroad = "http://central.maven.org/maven2/"
+        maven {
+            url = aliYun
+            artifactUrls abroad
+        }
+        maven {
+            url = "https://gitee.com/gin9/MavenRepos/raw/master"
+        }
+        jcenter()
+    }
+
+    // publish with source code
+    task sourceJar(type: Jar) {
+        from sourceSets.main.allJava
+    }
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                artifact sourceJar {
+                    classifier "sources"
+                }
+            }
+        }
+    }
+
+    // All sub-modules add the following dependencies
+    dependencies {
+        annotationProcessor libs['lombok']
+        compileOnly libs['lombok']
+        testAnnotationProcessor libs['lombok']
+        testCompileOnly libs['lombok']
+
+        implementation libs['logback-classic']
+
+        testImplementation libs['junit']
+        testImplementation libs['hamcrest-core']
+        testImplementation libs['hamcrest-lib']
+    }
+}
+
