@@ -2,26 +2,30 @@
 // just when module build.gradle use this dependency, then download and build project
 ext {
   ver = [
-      logback   : '1.2.3'
+      kcp_tool  : '1.0.7'
+      , logback : '1.2.3'
+      , lombok  : '1.18.10'
+      , mockito : '3.1.0'
       , junit   : '4.12'
-      , hamcrest: '1.3'
+      , hamcrest: '2.2'
       , cglib   : '3.3.0'
   ]
   libs = [
       // tool
-      "lombok"           : "org.projectlombok:lombok:1.18.2"
-
-      // test, junit has removed hamcrest since 4.11
-      , "hamcrest-core"  : "org.hamcrest:hamcrest-core:$ver.hamcrest"
-      , "hamcrest-lib"   : "org.hamcrest:hamcrest-library:$ver.hamcrest"
-
-      , "junit"          : "junit:junit:$ver.junit"
-      , "mockito-core"   : "org.mockito:mockito-core:2.21.0"
-      , "testng"         : "org.testng:testng:6.14.3"
+      "kcp-core"         : "com.github.kuangcp:kcp-core:$ver.kcp_tool"
+      , "kcp-aop"        : "com.github.kuangcp:kcp-aop:$ver.kcp_tool"
+      , "lombok"         : "org.projectlombok:lombok:$ver.lombok"
 
       // log
       , "logback-classic": "ch.qos.logback:logback-classic:$ver.logback"
 
-      , "cglib"    : "cglib:cglib-nodep:$ver.cglib"
+      // test
+      , "junit"          : "junit:junit:$ver.junit"
+      , "mockito-core"   : "org.mockito:mockito-core:$ver.mockito"
+      , "hamcrest-core"  : "org.hamcrest:hamcrest-core:$ver.hamcrest"
+      , "hamcrest-lib"   : "org.hamcrest:hamcrest-library:$ver.hamcrest"
+
+      , "cglib"          : "cglib:cglib-nodep:$ver.cglib"
+      , "dom4j"          : "dom4j:dom4j:1.6.1"
   ]
 }

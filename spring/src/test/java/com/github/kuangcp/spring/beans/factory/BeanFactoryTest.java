@@ -16,11 +16,11 @@ public class BeanFactoryTest {
 
   @Test
   public void testGetBean() {
-    BeanFactory factory = new DefaultBeanFactory("");
+    BeanFactory factory = new DefaultBeanFactory("tree.xml");
 
-    BeanDefinition definition = factory.getBeanDefinition("");
-    assertThat(definition.getClassName(), equalTo(""));
-    Object bean = factory.getBean("");
+    BeanDefinition definition = factory.getBeanDefinition("treeService");
+    assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.beans.TreeService"));
+    Object bean = factory.getBean("treeService");
     assertNotNull(bean);
   }
 }

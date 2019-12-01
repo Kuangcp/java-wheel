@@ -7,7 +7,7 @@ import com.github.kuangcp.spring.beans.BeanDefinition;
  */
 public interface BeanFactory {
 
-  Object getBean(String id);
+  Object getBean(String beanId);
 
   BeanDefinition getBeanDefinition(String beanId);
 }

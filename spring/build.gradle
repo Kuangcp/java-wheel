@@ -1,4 +1,7 @@
 dependencies {
 
   implementation libs['cglib']
+  implementation libs['dom4j']
+  implementation libs['kcp-core']
+  implementation libs['kcp-aop']
 }
