@@ -19,8 +19,8 @@ allprojects {
     repositories {
         mavenLocal()
 
-        def aliYun = "http://maven.aliyun.com/nexus/content/groups/public/"
-        def abroad = "http://central.maven.org/maven2/"
+        def aliYun = "https://maven.aliyun.com/nexus/content/groups/public/"
+        def abroad = "https://central.maven.org/maven2/"
         maven {
             url = aliYun
             artifactUrls abroad
