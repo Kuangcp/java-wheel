@@ -1,10 +1,10 @@
 package com.github.kuangcp.spring.beans.factory.xml;
 
-import com.github.kuangcp.aop.util.ClassUtil;
 import com.github.kuangcp.io.ResourceTool;
 import com.github.kuangcp.spring.beans.exception.BeanDefinitionParseException;
 import com.github.kuangcp.spring.beans.factory.support.BeanDefinitionRegistry;
 import com.github.kuangcp.spring.beans.factory.support.GenericBeanDefinition;
+import com.github.kuangcp.spring.core.io.Resource;
 import com.github.kuangcp.spring.util.StringUtil;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,11 +31,10 @@ public class XMLBeanDefinitionReader {
   }
 
   @SuppressWarnings("unchecked")
-  public void loadDefinition(String configFile) {
+  public void loadDefinition(Resource resource) {
     InputStream in = null;
     try {
-      ClassLoader loader = ClassUtil.getDefaultClassLoader();
-      in = loader.getResourceAsStream(configFile);
+      in = resource.getInputStream();
       SAXReader saxReader = new SAXReader();
       Document doc = saxReader.read(in);
       Element root = doc.getRootElement();
@@ -52,7 +51,7 @@ public class XMLBeanDefinitionReader {
         GenericBeanDefinition definition = new GenericBeanDefinition(id, className);
         registry.registerBeanDefinition(id, definition);
       }
-    } catch (DocumentException e) {
+    } catch (DocumentException | IOException e) {
       log.error("", e);
     } finally {
       try {

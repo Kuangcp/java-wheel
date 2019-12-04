@@ -10,6 +10,8 @@ import com.github.kuangcp.spring.beans.TreeService;
 import com.github.kuangcp.spring.beans.exception.BeanDefinitionParseException;
 import com.github.kuangcp.spring.beans.factory.support.DefaultBeanFactory;
 import com.github.kuangcp.spring.beans.factory.xml.XMLBeanDefinitionReader;
+import com.github.kuangcp.spring.core.io.ClassPathResource;
+import com.github.kuangcp.spring.core.io.Resource;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +32,8 @@ public class BeanFactoryTest {
 
   @Test
   public void testGetBean() {
-    reader.loadDefinition("tree.xml");
+    Resource source = new ClassPathResource("tree.xml");
+    reader.loadDefinition(source);
 
     BeanDefinition definition = factory.getBeanDefinition("treeService");
     assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.beans.TreeService"));
@@ -41,7 +44,8 @@ public class BeanFactoryTest {
   @Test
   public void testInvalidXML() {
     try {
-      reader.loadDefinition("tree-invalid.xml");
+      Resource source = new ClassPathResource("tree-invalid.xml");
+      reader.loadDefinition(source);
     } catch (BeanDefinitionParseException e) {
       return;
     }
