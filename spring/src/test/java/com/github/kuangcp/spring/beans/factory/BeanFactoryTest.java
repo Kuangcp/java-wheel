@@ -6,7 +6,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import com.github.kuangcp.spring.beans.BeanDefinition;
+import com.github.kuangcp.spring.beans.exception.BeanDefinitionParseException;
 import com.github.kuangcp.spring.beans.factory.support.DefaultBeanFactory;
+import com.github.kuangcp.spring.beans.factory.xml.XMLBeanDefinitionReader;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -14,13 +18,33 @@ import org.junit.Test;
  */
 public class BeanFactoryTest {
 
+  DefaultBeanFactory factory;
+  XMLBeanDefinitionReader reader;
+
+  @Before
+  public void setUp() {
+    factory = new DefaultBeanFactory();
+    reader = new XMLBeanDefinitionReader(factory);
+  }
+
   @Test
   public void testGetBean() {
-    BeanFactory factory = new DefaultBeanFactory("tree.xml");
+    reader.loadDefinition("tree.xml");
 
     BeanDefinition definition = factory.getBeanDefinition("treeService");
     assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.beans.TreeService"));
     Object bean = factory.getBean("treeService");
     assertNotNull(bean);
+  }
+
+  @Test
+  public void testInvalidXML() {
+    try {
+      reader.loadDefinition("tree-invalid.xml");
+    } catch (BeanDefinitionParseException e) {
+      return;
+    }
+
+    Assert.fail("except BeanDefinitionParseException ");
   }
 }
