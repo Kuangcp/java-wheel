@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import com.github.kuangcp.spring.beans.BeanDefinition;
+import com.github.kuangcp.spring.beans.TreeService;
 import com.github.kuangcp.spring.beans.exception.BeanDefinitionParseException;
 import com.github.kuangcp.spring.beans.factory.support.DefaultBeanFactory;
 import com.github.kuangcp.spring.beans.factory.xml.XMLBeanDefinitionReader;
@@ -33,7 +34,7 @@ public class BeanFactoryTest {
 
     BeanDefinition definition = factory.getBeanDefinition("treeService");
     assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.beans.TreeService"));
-    Object bean = factory.getBean("treeService");
+    TreeService bean = (TreeService) factory.getBean("treeService");
     assertNotNull(bean);
   }
 
