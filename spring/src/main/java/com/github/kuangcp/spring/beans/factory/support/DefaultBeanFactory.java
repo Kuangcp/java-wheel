@@ -2,7 +2,7 @@ package com.github.kuangcp.spring.beans.factory.support;
 
 import com.github.kuangcp.aop.util.ClassUtil;
 import com.github.kuangcp.spring.beans.BeanDefinition;
-import com.github.kuangcp.spring.beans.factory.BeanFactory;
+import com.github.kuangcp.spring.beans.factory.config.ConfigurableBeanFactory;
 import java.lang.reflect.Constructor;
 import java.util.Map;
 import java.util.Objects;
@@ -15,9 +15,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @NoArgsConstructor
-public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
+public class DefaultBeanFactory implements ConfigurableBeanFactory, BeanDefinitionRegistry {
 
   private Map<String, BeanDefinition> definitionMap = new ConcurrentHashMap<>();
+  private ClassLoader loader;
 
   @Override
   public Object getBean(String beanId) {
@@ -26,7 +27,7 @@ public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
       return null;
     }
 
-    ClassLoader loader = ClassUtil.getDefaultClassLoader();
+    ClassLoader loader = this.getBeanClassLoader();
     String className = definition.getClassName();
     try {
       Class<?> target = loader.loadClass(className);
@@ -50,5 +51,15 @@ public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
   @Override
   public void registerBeanDefinition(String beanId, BeanDefinition definition) {
     this.definitionMap.put(beanId, definition);
+  }
+
+  @Override
+  public void setBeanClassLoader(ClassLoader loader) {
+    this.loader = loader;
+  }
+
+  @Override
+  public ClassLoader getBeanClassLoader() {
+    return Objects.nonNull(this.loader) ? this.loader : ClassUtil.getDefaultClassLoader();
   }
 }
