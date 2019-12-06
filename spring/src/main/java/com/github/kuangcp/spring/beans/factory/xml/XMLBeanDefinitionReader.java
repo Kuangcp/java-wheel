@@ -1,5 +1,7 @@
 package com.github.kuangcp.spring.beans.factory.xml;
 
+import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.*;
+
 import com.github.kuangcp.io.ResourceTool;
 import com.github.kuangcp.spring.beans.exception.BeanDefinitionParseException;
 import com.github.kuangcp.spring.beans.factory.support.BeanDefinitionRegistry;
@@ -21,10 +23,7 @@ import org.dom4j.io.SAXReader;
 @Slf4j
 public class XMLBeanDefinitionReader {
 
-  public static final String ID_ATTRIBUTE = "id";
-  public static final String CLASS_ATTRIBUTE = "class";
-
-  BeanDefinitionRegistry registry;
+  private BeanDefinitionRegistry registry;
 
   public XMLBeanDefinitionReader(BeanDefinitionRegistry registry) {
     this.registry = registry;
@@ -43,12 +42,14 @@ public class XMLBeanDefinitionReader {
         Element element = iterator.next();
         String id = element.attributeValue(ID_ATTRIBUTE);
         String className = element.attributeValue(CLASS_ATTRIBUTE);
+        String scope = element.attributeValue(SCOPE_ATTRIBUTE);
 
         if (StringUtil.isBlank(id) || StringUtil.isBlank(className)) {
           throw new BeanDefinitionParseException();
         }
 
         GenericBeanDefinition definition = new GenericBeanDefinition(id, className);
+        definition.setScope(scope);
         registry.registerBeanDefinition(id, definition);
       }
     } catch (DocumentException | IOException e) {

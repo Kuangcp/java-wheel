@@ -15,18 +15,33 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @NoArgsConstructor
-public class DefaultBeanFactory implements ConfigurableBeanFactory, BeanDefinitionRegistry {
+public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
+    implements ConfigurableBeanFactory, BeanDefinitionRegistry {
 
   private Map<String, BeanDefinition> definitionMap = new ConcurrentHashMap<>();
   private ClassLoader loader;
 
   @Override
   public Object getBean(String beanId) {
-    BeanDefinition definition = getBeanDefinition(beanId);
+    BeanDefinition definition = this.getBeanDefinition(beanId);
     if (Objects.isNull(definition)) {
       return null;
     }
 
+    if (definition.isSingleton()) {
+      Object bean = this.getSingleton(beanId);
+      if (Objects.isNull(bean)) {
+        bean = this.createBean(definition);
+        this.registerSingleton(beanId, bean);
+      }
+
+      return bean;
+    }
+
+    return this.createBean(definition);
+  }
+
+  private Object createBean(BeanDefinition definition) {
     ClassLoader loader = this.getBeanClassLoader();
     String className = definition.getClassName();
     try {
