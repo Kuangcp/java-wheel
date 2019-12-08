@@ -20,8 +20,18 @@ public class ApplicationContextTest {
   }
 
   @Test
+  public void testGetBeanWithInject() {
+    ApplicationContext context =
+        new ClassPathXmlApplicationContext("tree-with-property.xml");
+    TreeService bean = (TreeService) context.getBean("treeService");
+    assertNotNull(bean);
+    assertNotNull(bean.getTreeDao());
+  }
+
+  @Test
   public void testGetBeanFromFileSystem() {
-    ApplicationContext context = new FileSystemXmlApplicationContext("/home/kcp/Code/Java/java-wheel/spring/src/test/resources/tree.xml");
+    ApplicationContext context = new FileSystemXmlApplicationContext(
+        "/home/kcp/Code/Java/java-wheel/spring/src/test/resources/tree.xml");
     TreeService bean = (TreeService) context.getBean("treeService");
     assertNotNull(bean);
   }

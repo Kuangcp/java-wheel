@@ -8,4 +8,8 @@ public interface XMLPropertyConstants {
   String ID_ATTRIBUTE = "id";
   String CLASS_ATTRIBUTE = "class";
   String SCOPE_ATTRIBUTE = "scope";
+  String PROPERTY_ATTRIBUTE = "property";
+  String REF_ATTRIBUTE = "ref";
+  String VALUE_ATTRIBUTE = "value";
+  String NAME_ATTRIBUTE = "name";
 }

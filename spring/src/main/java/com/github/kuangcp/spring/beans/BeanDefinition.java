@@ -1,5 +1,7 @@
 package com.github.kuangcp.spring.beans;
 
+import java.util.Map;
+
 /**
  * @author https://github.com/kuangcp on 2019-12-01 16:36
  */
@@ -20,4 +22,9 @@ public interface BeanDefinition {
   String getScope();
 
   void setScope(String scope);
+
+  /**
+   * @return propertyName -> PropertyValue
+   */
+  Map<String, PropertyValue> getPropertyValueMap();
 }

@@ -2,9 +2,15 @@ package com.github.kuangcp.spring.beans.factory.support;
 
 import com.github.kuangcp.aop.util.ClassUtil;
 import com.github.kuangcp.spring.beans.BeanDefinition;
+import com.github.kuangcp.spring.beans.PropertyValue;
+import com.github.kuangcp.spring.beans.exception.BeanCreateException;
 import com.github.kuangcp.spring.beans.factory.config.ConfigurableBeanFactory;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.NoArgsConstructor;
@@ -42,6 +48,41 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
   }
 
   private Object createBean(BeanDefinition definition) {
+    Object bean = instantiateBean(definition);
+    this.populateBean(bean, definition);
+    return bean;
+  }
+
+  private void populateBean(Object bean, BeanDefinition definition) {
+    Map<String, PropertyValue> propertyValueMap = definition.getPropertyValueMap();
+    if (Objects.isNull(propertyValueMap) || propertyValueMap.isEmpty()) {
+      return;
+    }
+
+    BeanDefinitionValueResolver valueResolver = new BeanDefinitionValueResolver(this);
+    try {
+      for (Entry<String, PropertyValue> entry : propertyValueMap.entrySet()) {
+        String propertyName = entry.getKey();
+        Object propertyValue = entry.getValue().getValue();
+        Object resolvedValue = valueResolver.resolverValueIfNecessary(propertyValue);
+
+        // inject bean as property to target bean
+        BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
+        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+        for (PropertyDescriptor descriptor : propertyDescriptors) {
+          if (descriptor.getName().equals(propertyName)) {
+            descriptor.getWriteMethod().invoke(bean, resolvedValue);
+          }
+        }
+      }
+    } catch (Exception e) {
+      throw new BeanCreateException("failed to create bean: " + definition.getClassName());
+    }
+
+  }
+
+
+  private Object instantiateBean(BeanDefinition definition) {
     ClassLoader loader = this.getBeanClassLoader();
     String className = definition.getClassName();
     try {

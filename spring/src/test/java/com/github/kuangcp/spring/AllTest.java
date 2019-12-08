@@ -1,7 +1,6 @@
-package com.github.kuangcp.spring.context;
+package com.github.kuangcp.spring;
 
-import com.github.kuangcp.spring.beans.factory.BeanFactoryTest;
-import com.github.kuangcp.spring.core.io.ResourceTest;
+import com.github.kuangcp.spring.context.ApplicationContextTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -11,10 +10,9 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    BeanFactoryTest.class,
     ApplicationContextTest.class,
-    ResourceTest.class
+    BeansSuiteTest.class
 })
-public class BeansSuiteTest {
+public class AllTest {
 
 }

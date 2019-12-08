@@ -11,7 +11,6 @@ import org.junit.Test;
  */
 public class ResourceTest {
 
-
   @Test
   public void testClassPath() throws Exception {
     Resource source = new ClassPathResource("tree.xml");

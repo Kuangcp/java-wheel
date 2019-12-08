@@ -1,7 +1,10 @@
 package com.github.kuangcp.spring.beans.factory.support;
 
 import com.github.kuangcp.spring.beans.BeanDefinition;
+import com.github.kuangcp.spring.beans.PropertyValue;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +22,8 @@ public class GenericBeanDefinition implements BeanDefinition {
   private boolean singleton;
 
   private boolean prototype;
+
+  private Map<String, PropertyValue> propertyValueMap = new ConcurrentHashMap<>();
 
   public GenericBeanDefinition(String id, String className) {
     this.id = id;

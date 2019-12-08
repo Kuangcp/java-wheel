@@ -1,12 +1,18 @@
 package com.github.kuangcp.spring.util;
 
+import java.util.Objects;
+
 /**
  * @author https://github.com/kuangcp on 2019-12-04 23:40
  */
-public final class StringUtil {
+public final class StringUtils {
 
-  private StringUtil() {
+  private StringUtils() {
 
+  }
+
+  public static boolean hasLength(final CharSequence cs) {
+    return Objects.nonNull(cs) && cs.length() > 0;
   }
 
   public static boolean isBlank(final CharSequence cs) {
