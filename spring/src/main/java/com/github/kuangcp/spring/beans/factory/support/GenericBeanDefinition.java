@@ -1,6 +1,7 @@
 package com.github.kuangcp.spring.beans.factory.support;
 
 import com.github.kuangcp.spring.beans.BeanDefinition;
+import com.github.kuangcp.spring.beans.ConstructorArgument;
 import com.github.kuangcp.spring.beans.PropertyValue;
 import java.util.Map;
 import java.util.Objects;
@@ -24,6 +25,8 @@ public class GenericBeanDefinition implements BeanDefinition {
   private boolean prototype;
 
   private Map<String, PropertyValue> propertyValueMap = new ConcurrentHashMap<>();
+
+  private ConstructorArgument constructorArgument = new ConstructorArgument();
 
   public GenericBeanDefinition(String id, String className) {
     this.id = id;

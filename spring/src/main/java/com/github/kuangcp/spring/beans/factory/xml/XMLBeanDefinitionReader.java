@@ -1,16 +1,21 @@
 package com.github.kuangcp.spring.beans.factory.xml;
 
 import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.CLASS_ATTRIBUTE;
+import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.CONSTRUCTOR_ARG_ELEMENT;
 import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.ID_ATTRIBUTE;
 import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.NAME_ATTRIBUTE;
 import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.PROPERTY_ATTRIBUTE;
 import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.REF_ATTRIBUTE;
 import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.SCOPE_ATTRIBUTE;
+import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.TYPE_ATTRIBUTE;
+import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.VALUE_ATTRIBUTE;
 
 import com.github.kuangcp.io.ResourceTool;
+import com.github.kuangcp.spring.beans.ConstructorArgument.ValueHolder;
 import com.github.kuangcp.spring.beans.PropertyValue;
 import com.github.kuangcp.spring.beans.exception.BeanDefinitionParseException;
 import com.github.kuangcp.spring.beans.factory.config.RuntimeBeanReference;
+import com.github.kuangcp.spring.beans.factory.config.TypedStringValue;
 import com.github.kuangcp.spring.beans.factory.support.BeanDefinitionRegistry;
 import com.github.kuangcp.spring.beans.factory.support.GenericBeanDefinition;
 import com.github.kuangcp.spring.core.io.Resource;
@@ -58,6 +63,7 @@ public class XMLBeanDefinitionReader {
 
         GenericBeanDefinition definition = new GenericBeanDefinition(id, className);
         definition.setScope(scope);
+        this.parseConstructorArgElement(element, definition);
         this.parsePropertyElement(element, definition);
         registry.registerBeanDefinition(id, definition);
       }
@@ -72,6 +78,28 @@ public class XMLBeanDefinitionReader {
     }
   }
 
+  private void parseConstructorArgElement(Element element, GenericBeanDefinition definition) {
+    Iterator iterator = element.elementIterator(CONSTRUCTOR_ARG_ELEMENT);
+    while (iterator.hasNext()) {
+      Element property = (Element) iterator.next();
+      this.parseConstructorArg(property, definition);
+    }
+  }
+
+  private void parseConstructorArg(Element property, GenericBeanDefinition definition) {
+    String type = property.attributeValue(TYPE_ATTRIBUTE);
+    String name = property.attributeValue(NAME_ATTRIBUTE);
+    Object propertyValue = this.parsePropertyValue(property, null);
+    ValueHolder valueHolder = new ValueHolder(propertyValue);
+    if (StringUtils.hasLength(type)) {
+      valueHolder.setType(type);
+    }
+    if (StringUtils.hasLength(name)) {
+      valueHolder.setType(name);
+    }
+    definition.getConstructorArgument().getValueHolders().add(valueHolder);
+  }
+
   private void parsePropertyElement(Element element, GenericBeanDefinition definition) {
     Iterator iterator = element.elementIterator(PROPERTY_ATTRIBUTE);
     while (iterator.hasNext()) {
@@ -82,12 +110,17 @@ public class XMLBeanDefinitionReader {
         return;
       }
 
-      Object value = this.parsePropertyValue(property, propertyName);
-      PropertyValue propertyValue = new PropertyValue(propertyName, value);
-      definition.getPropertyValueMap().put(propertyName, propertyValue);
+      Object propertyValue = this.parsePropertyValue(property, propertyName);
+      definition.getPropertyValueMap().put(propertyName,
+          new PropertyValue(propertyName, propertyValue));
     }
   }
 
+  /**
+   * @param property element
+   * @param propertyName name just for log
+   * @return RuntimeBeanReference or literal
+   */
   private Object parsePropertyValue(Element property, String propertyName) {
     String refBeanId = property.attributeValue(REF_ATTRIBUTE);
     if (Objects.nonNull(refBeanId)) {
@@ -95,6 +128,8 @@ public class XMLBeanDefinitionReader {
         log.error("{} contains empty value ", propertyName);
       }
       return new RuntimeBeanReference(refBeanId);
+    } else if (Objects.nonNull(property.attributeValue(VALUE_ATTRIBUTE))) {
+      return new TypedStringValue(property.attributeValue(VALUE_ATTRIBUTE));
     } else {
       throw new RuntimeException("must specify a ref ");
     }

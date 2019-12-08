@@ -5,9 +5,6 @@ import com.github.kuangcp.spring.beans.BeanDefinition;
 import com.github.kuangcp.spring.beans.PropertyValue;
 import com.github.kuangcp.spring.beans.exception.BeanCreateException;
 import com.github.kuangcp.spring.beans.factory.config.ConfigurableBeanFactory;
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,6 +12,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.BeanUtils;
 
 /**
  * @author https://github.com/kuangcp on 2019-12-01 16:40
@@ -67,20 +65,12 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
         Object resolvedValue = valueResolver.resolverValueIfNecessary(propertyValue);
 
         // inject bean as property to target bean
-        BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
-        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-        for (PropertyDescriptor descriptor : propertyDescriptors) {
-          if (descriptor.getName().equals(propertyName)) {
-            descriptor.getWriteMethod().invoke(bean, resolvedValue);
-          }
-        }
+        BeanUtils.setProperty(bean, propertyName, resolvedValue);
       }
     } catch (Exception e) {
       throw new BeanCreateException("failed to create bean: " + definition.getClassName());
     }
-
   }
-
 
   private Object instantiateBean(BeanDefinition definition) {
     ClassLoader loader = this.getBeanClassLoader();

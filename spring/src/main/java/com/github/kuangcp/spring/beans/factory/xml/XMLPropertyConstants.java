@@ -12,4 +12,7 @@ public interface XMLPropertyConstants {
   String REF_ATTRIBUTE = "ref";
   String VALUE_ATTRIBUTE = "value";
   String NAME_ATTRIBUTE = "name";
+  String CONSTRUCTOR_ARG_ELEMENT = "constructor-arg";
+  String TYPE_ATTRIBUTE = "type";
+
 }

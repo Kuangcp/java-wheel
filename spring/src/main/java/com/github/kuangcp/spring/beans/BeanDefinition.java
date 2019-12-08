@@ -27,4 +27,6 @@ public interface BeanDefinition {
    * @return propertyName -> PropertyValue
    */
   Map<String, PropertyValue> getPropertyValueMap();
+
+  ConstructorArgument getConstructorArgument();
 }

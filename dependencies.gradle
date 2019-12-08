@@ -12,20 +12,21 @@ ext {
   ]
   libs = [
       // tool
-      "kcp-core"         : "com.github.kuangcp:kcp-core:$ver.kcp_tool"
-      , "kcp-aop"        : "com.github.kuangcp:kcp-aop:$ver.kcp_tool"
-      , "lombok"         : "org.projectlombok:lombok:$ver.lombok"
+      "kcp-core"           : "com.github.kuangcp:kcp-core:$ver.kcp_tool"
+      , "kcp-aop"          : "com.github.kuangcp:kcp-aop:$ver.kcp_tool"
+      , "lombok"           : "org.projectlombok:lombok:$ver.lombok"
+      , "commons-beanutils": "commons-beanutils:commons-beanutils:1.9.4"
 
       // log
-      , "logback-classic": "ch.qos.logback:logback-classic:$ver.logback"
+      , "logback-classic"  : "ch.qos.logback:logback-classic:$ver.logback"
 
       // test
-      , "junit"          : "junit:junit:$ver.junit"
-      , "mockito-core"   : "org.mockito:mockito-core:$ver.mockito"
-      , "hamcrest-core"  : "org.hamcrest:hamcrest-core:$ver.hamcrest"
-      , "hamcrest-lib"   : "org.hamcrest:hamcrest-library:$ver.hamcrest"
+      , "junit"            : "junit:junit:$ver.junit"
+      , "mockito-core"     : "org.mockito:mockito-core:$ver.mockito"
+      , "hamcrest-core"    : "org.hamcrest:hamcrest-core:$ver.hamcrest"
+      , "hamcrest-lib"     : "org.hamcrest:hamcrest-library:$ver.hamcrest"
 
-      , "cglib"          : "cglib:cglib-nodep:$ver.cglib"
-      , "dom4j"          : "dom4j:dom4j:1.6.1"
+      , "cglib"            : "cglib:cglib-nodep:$ver.cglib"
+      , "dom4j"            : "dom4j:dom4j:1.6.1"
   ]
 }

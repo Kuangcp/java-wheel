@@ -20,12 +20,22 @@ public class ApplicationContextTest {
   }
 
   @Test
-  public void testGetBeanWithInject() {
+  public void testGetBeanWithPropertyInject() {
     ApplicationContext context =
         new ClassPathXmlApplicationContext("tree-with-property.xml");
     TreeService bean = (TreeService) context.getBean("treeService");
     assertNotNull(bean);
     assertNotNull(bean.getTreeDao());
+  }
+
+  @Test
+  public void testGetBeanWithConstructorInject() {
+    ApplicationContext context =
+        new ClassPathXmlApplicationContext("tree-with-constructor.xml");
+    TreeService bean = (TreeService) context.getBean("treeService");
+    assertNotNull(bean);
+    assertNotNull(bean.getTreeDao());
+    assertNotNull(bean.getVersion());
   }
 
   @Test
