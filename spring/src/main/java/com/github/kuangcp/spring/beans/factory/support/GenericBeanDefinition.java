@@ -48,4 +48,9 @@ public class GenericBeanDefinition implements BeanDefinition {
     this.singleton = SCOPE_SINGLETON.equals(scope) || SCOPE_DEFAULT.equals(scope);
     this.prototype = SCOPE_PROTOTYPE.equals(scope);
   }
+
+  @Override
+  public boolean hasConstructorValue() {
+    return constructorArgument.getArgumentCount() > 0;
+  }
 }

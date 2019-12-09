@@ -1,5 +1,6 @@
 package com.github.kuangcp.spring.beans.factory.support;
 
+import com.github.kuangcp.spring.beans.factory.BeanFactory;
 import com.github.kuangcp.spring.beans.factory.config.RuntimeBeanReference;
 import com.github.kuangcp.spring.beans.factory.config.TypedStringValue;
 
@@ -8,9 +9,9 @@ import com.github.kuangcp.spring.beans.factory.config.TypedStringValue;
  */
 public class BeanDefinitionValueResolver {
 
-  private final DefaultBeanFactory beanFactory;
+  private final BeanFactory beanFactory;
 
-  public BeanDefinitionValueResolver(DefaultBeanFactory beanFactory) {
+  public BeanDefinitionValueResolver(BeanFactory beanFactory) {
     this.beanFactory = beanFactory;
   }
 
@@ -20,7 +21,7 @@ public class BeanDefinitionValueResolver {
       String beanId = ref.getBeanId();
       return this.beanFactory.getBean(beanId);
     } else if (value instanceof TypedStringValue) {
-      return value;
+      return ((TypedStringValue) value).getValue();
     } else {
       throw new RuntimeException("the value " + value + " has not implement");
     }

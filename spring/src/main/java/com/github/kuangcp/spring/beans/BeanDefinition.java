@@ -29,4 +29,6 @@ public interface BeanDefinition {
   Map<String, PropertyValue> getPropertyValueMap();
 
   ConstructorArgument getConstructorArgument();
+
+  boolean hasConstructorValue();
 }

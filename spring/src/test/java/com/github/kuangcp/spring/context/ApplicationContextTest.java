@@ -1,6 +1,8 @@
 package com.github.kuangcp.spring.context;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 import com.github.kuangcp.spring.beans.TreeService;
 import com.github.kuangcp.spring.context.support.ClassPathXmlApplicationContext;
@@ -35,7 +37,7 @@ public class ApplicationContextTest {
     TreeService bean = (TreeService) context.getBean("treeService");
     assertNotNull(bean);
     assertNotNull(bean.getTreeDao());
-    assertNotNull(bean.getVersion());
+    assertThat(bean.getVersion(), equalTo("version"));
   }
 
   @Test
