@@ -4,7 +4,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-import com.github.kuangcp.spring.beans.TreeService;
+import com.github.kuangcp.spring.bean.TreeService;
 import com.github.kuangcp.spring.context.support.ClassPathXmlApplicationContext;
 import com.github.kuangcp.spring.context.support.FileSystemXmlApplicationContext;
 import org.junit.Test;
@@ -46,5 +46,14 @@ public class ApplicationContextTest {
         "/home/kcp/Code/Java/java-wheel/spring/src/test/resources/tree.xml");
     TreeService bean = (TreeService) context.getBean("treeService");
     assertNotNull(bean);
+  }
+
+  @Test
+  public void testGetBeanWithAnnotation() throws Exception {
+    ApplicationContext context =
+        new ClassPathXmlApplicationContext("tree-with-annotation.xml");
+    TreeService bean = (TreeService) context.getBean("treeService");
+    assertNotNull(bean);
+    assertNotNull(bean.getTreeDao());
   }
 }

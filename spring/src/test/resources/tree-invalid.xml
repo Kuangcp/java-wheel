@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
-  <bean id="treeService" className="com.github.kuangcp.spring.beans.TreeService"/>
+  <bean id="treeService" className="com.github.kuangcp.spring.bean.TreeService"/>
 </beans>

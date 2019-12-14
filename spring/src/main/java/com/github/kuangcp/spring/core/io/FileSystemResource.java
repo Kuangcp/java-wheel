@@ -11,11 +11,18 @@ import java.io.InputStream;
  */
 public class FileSystemResource implements Resource {
 
+  private final String path;
   private File file;
+
+  public FileSystemResource(File file) {
+    this.file = file;
+    this.path = file.getPath();
+  }
 
   public FileSystemResource(String path) {
     Assert.notNull(path, "file not found");
 
+    this.path = path;
     this.file = new File(path);
   }
 

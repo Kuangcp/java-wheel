@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
+import com.github.kuangcp.spring.bean.TreeService;
 import com.github.kuangcp.spring.beans.factory.support.ConstructorResolver;
 import com.github.kuangcp.spring.beans.factory.support.DefaultBeanFactory;
 import com.github.kuangcp.spring.beans.factory.xml.XMLBeanDefinitionReader;
@@ -31,7 +32,7 @@ public class ConstructorResolverTest {
     reader.loadDefinition(new ClassPathResource("tree-with-constructor.xml"));
 
     BeanDefinition definition = factory.getBeanDefinition("treeService");
-    assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.beans.TreeService"));
+    assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.bean.TreeService"));
 
     ConstructorResolver constructorResolver = new ConstructorResolver(factory);
 

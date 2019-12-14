@@ -3,6 +3,7 @@ package com.github.kuangcp.spring.beans;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.github.kuangcp.spring.bean.TreeDao;
 import com.github.kuangcp.spring.beans.factory.config.RuntimeBeanReference;
 import com.github.kuangcp.spring.beans.factory.support.BeanDefinitionValueResolver;
 import com.github.kuangcp.spring.beans.factory.support.DefaultBeanFactory;

@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import com.github.kuangcp.spring.beans.BeanDefinition;
-import com.github.kuangcp.spring.beans.TreeService;
+import com.github.kuangcp.spring.bean.TreeService;
 import com.github.kuangcp.spring.beans.exception.BeanDefinitionParseException;
 import com.github.kuangcp.spring.beans.factory.support.DefaultBeanFactory;
 import com.github.kuangcp.spring.beans.factory.xml.XMLBeanDefinitionReader;
@@ -37,7 +37,7 @@ public class BeanFactoryTest {
     reader.loadDefinition(new ClassPathResource("tree.xml"));
 
     BeanDefinition definition = factory.getBeanDefinition("treeService");
-    assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.beans.TreeService"));
+    assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.bean.TreeService"));
     TreeService bean = (TreeService) factory.getBean("treeService");
     assertNotNull(bean);
   }
@@ -61,7 +61,7 @@ public class BeanFactoryTest {
     assertFalse(definition.isPrototype());
     assertThat(definition.getScope(), equalTo(BeanDefinition.SCOPE_DEFAULT));
 
-    assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.beans.TreeService"));
+    assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.bean.TreeService"));
     TreeService bean = (TreeService) factory.getBean("treeService");
     assertNotNull(bean);
 

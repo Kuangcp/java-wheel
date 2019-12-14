@@ -7,6 +7,6 @@
            http://www.springframework.org/schema/aop
            http://www.springframework.org/schema/aop/spring-aop-4.5.xsd">
 
-  <bean id="treeService" class="com.github.kuangcp.spring.beans.TreeService"/>
+  <bean id="treeService" class="com.github.kuangcp.spring.bean.TreeService"/>
 
 </beans>

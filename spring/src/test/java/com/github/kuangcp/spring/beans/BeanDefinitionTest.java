@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import com.github.kuangcp.spring.bean.TreeService;
 import com.github.kuangcp.spring.beans.ConstructorArgument.ValueHolder;
 import com.github.kuangcp.spring.beans.factory.config.RuntimeBeanReference;
 import com.github.kuangcp.spring.beans.factory.config.TypedStringValue;
@@ -35,7 +36,7 @@ public class BeanDefinitionTest {
     reader.loadDefinition(new ClassPathResource("tree-with-property.xml"));
 
     BeanDefinition definition = factory.getBeanDefinition("treeService");
-    assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.beans.TreeService"));
+    assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.bean.TreeService"));
     TreeService bean = (TreeService) factory.getBean("treeService");
     assertNotNull(bean);
 
@@ -54,7 +55,7 @@ public class BeanDefinitionTest {
     reader.loadDefinition(new ClassPathResource("tree-with-constructor.xml"));
 
     BeanDefinition definition = factory.getBeanDefinition("treeService");
-    assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.beans.TreeService"));
+    assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.bean.TreeService"));
 
     ConstructorArgument argument = definition.getConstructorArgument();
     List<ValueHolder> valueHolders = argument.getValueHolders();
