@@ -20,6 +20,7 @@
   1. 把一个package 下的类 变成 Resource
   1. 使用 ASM 读取 resource 的注解
   1. 创建 BeanDefinition
+  1. Bean 注入
 - Bean 生命周期管理
 
 ## v1.4

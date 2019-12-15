@@ -60,6 +60,7 @@ public class ClassPathBeanDefinitionScanner {
             candidates.add(definition);
           }
         } catch (Throwable ex) {
+          log.error("", ex);
           throw new BeanDefinitionStoreException(
               "Failed to read candidate component class: " + resource, ex);
         }

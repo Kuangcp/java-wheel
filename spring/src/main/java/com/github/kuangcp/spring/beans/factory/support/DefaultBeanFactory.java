@@ -5,6 +5,7 @@ import com.github.kuangcp.spring.beans.BeanDefinition;
 import com.github.kuangcp.spring.beans.PropertyValue;
 import com.github.kuangcp.spring.beans.exception.BeanCreateException;
 import com.github.kuangcp.spring.beans.factory.config.ConfigurableBeanFactory;
+import com.github.kuangcp.spring.beans.factory.config.DependencyDescriptor;
 import java.lang.reflect.Constructor;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -112,5 +113,31 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
   @Override
   public ClassLoader getBeanClassLoader() {
     return Objects.nonNull(this.loader) ? this.loader : ClassUtil.getDefaultClassLoader();
+  }
+
+  /**
+   * resolveBeanClass must invoke before resolveBeanClass
+   */
+  @Override
+  public Object resolveDependency(DependencyDescriptor descriptor) {
+    Class<?> typeToMatch = descriptor.getDependencyType();
+    for (BeanDefinition bd : this.definitionMap.values()) {
+      this.resolveBeanClass(bd);
+      Class<?> beanClass = bd.getBeanClass();
+      if (typeToMatch.isAssignableFrom(beanClass)) {
+        return this.getBean(bd.getId());
+      }
+    }
+    return null;
+  }
+
+  public void resolveBeanClass(BeanDefinition bd) {
+    if (!bd.hasBeanClass()) {
+      try {
+        bd.resolveBeanClass(this.getBeanClassLoader());
+      } catch (ClassNotFoundException e) {
+        throw new RuntimeException("can't load class:" + bd.getClassName());
+      }
+    }
   }
 }

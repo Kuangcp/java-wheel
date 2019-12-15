@@ -15,10 +15,8 @@ public class ScannedGenericBeanDefinition
 
   public ScannedGenericBeanDefinition(AnnotationMetadata metadata) {
     super();
-
     this.metadata = metadata;
-
-    setClassName(this.metadata.getClassName());
+    this.setClassName(this.metadata.getClassName());
   }
 
   public final AnnotationMetadata getMetadata() {
