@@ -1,7 +1,10 @@
 package com.github.kuangcp.spring.beans.factory.xml;
 
+import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.BASE_PACKAGE_ATTRIBUTE;
+import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.BEANS_NAMESPACE_URI;
 import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.CLASS_ATTRIBUTE;
 import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.CONSTRUCTOR_ARG_ELEMENT;
+import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.CONTEXT_NAMESPACE_URI;
 import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.ID_ATTRIBUTE;
 import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.NAME_ATTRIBUTE;
 import static com.github.kuangcp.spring.beans.factory.xml.XMLPropertyConstants.PROPERTY_ATTRIBUTE;
@@ -18,6 +21,7 @@ import com.github.kuangcp.spring.beans.factory.config.RuntimeBeanReference;
 import com.github.kuangcp.spring.beans.factory.config.TypedStringValue;
 import com.github.kuangcp.spring.beans.factory.support.BeanDefinitionRegistry;
 import com.github.kuangcp.spring.beans.factory.support.GenericBeanDefinition;
+import com.github.kuangcp.spring.context.annotation.ClassPathBeanDefinitionScanner;
 import com.github.kuangcp.spring.core.io.Resource;
 import com.github.kuangcp.spring.util.StringUtils;
 import java.io.IOException;
@@ -53,19 +57,13 @@ public class XMLBeanDefinitionReader {
       Iterator<Element> iterator = root.elementIterator();
       while (iterator.hasNext()) {
         Element element = iterator.next();
-        String id = element.attributeValue(ID_ATTRIBUTE);
-        String className = element.attributeValue(CLASS_ATTRIBUTE);
-        String scope = element.attributeValue(SCOPE_ATTRIBUTE);
 
-        if (StringUtils.isBlank(id) || StringUtils.isBlank(className)) {
-          throw new BeanDefinitionParseException();
+        String namespaceUri = element.getNamespaceURI();
+        if (this.isDefaultNamespace(namespaceUri)) {
+          this.parseDefaultElement(element); //普通的bean
+        } else if (this.isContextNamespace(namespaceUri)) {
+          this.parseComponentElement(element); //例如<context:component-scan>
         }
-
-        GenericBeanDefinition definition = new GenericBeanDefinition(id, className);
-        definition.setScope(scope);
-        this.parseConstructorArgElement(element, definition);
-        this.parsePropertyElement(element, definition);
-        registry.registerBeanDefinition(id, definition);
       }
     } catch (DocumentException | IOException e) {
       log.error("", e);
@@ -78,6 +76,37 @@ public class XMLBeanDefinitionReader {
     }
   }
 
+  private void parseComponentElement(Element ele) {
+    String basePackages = ele.attributeValue(BASE_PACKAGE_ATTRIBUTE);
+    ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(registry);
+    scanner.doScan(basePackages);
+  }
+
+  private void parseDefaultElement(Element element) {
+    String id = element.attributeValue(ID_ATTRIBUTE);
+    String className = element.attributeValue(CLASS_ATTRIBUTE);
+    String scope = element.attributeValue(SCOPE_ATTRIBUTE);
+
+    if (StringUtils.isBlank(id) || StringUtils.isBlank(className)) {
+      throw new BeanDefinitionParseException();
+    }
+
+    GenericBeanDefinition definition = new GenericBeanDefinition(id, className);
+    definition.setScope(scope);
+    this.parseConstructorArgElement(element, definition);
+    this.parsePropertyElement(element, definition);
+    registry.registerBeanDefinition(id, definition);
+  }
+
+  public boolean isDefaultNamespace(String namespaceUri) {
+    return (!StringUtils.hasLength(namespaceUri) || BEANS_NAMESPACE_URI.equals(namespaceUri));
+  }
+
+  public boolean isContextNamespace(String namespaceUri) {
+    return (!StringUtils.hasLength(namespaceUri) || CONTEXT_NAMESPACE_URI.equals(namespaceUri));
+  }
+
+  @SuppressWarnings("rawtypes")
   private void parseConstructorArgElement(Element element, GenericBeanDefinition definition) {
     Iterator iterator = element.elementIterator(CONSTRUCTOR_ARG_ELEMENT);
     while (iterator.hasNext()) {
@@ -100,6 +129,7 @@ public class XMLBeanDefinitionReader {
     definition.getConstructorArgument().getValueHolders().add(valueHolder);
   }
 
+  @SuppressWarnings("rawtypes")
   private void parsePropertyElement(Element element, GenericBeanDefinition definition) {
     Iterator iterator = element.elementIterator(PROPERTY_ATTRIBUTE);
     while (iterator.hasNext()) {

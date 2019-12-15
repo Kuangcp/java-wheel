@@ -3,7 +3,6 @@ package com.github.kuangcp.spring.core.io.support;
 import com.github.kuangcp.spring.core.io.FileSystemResource;
 import com.github.kuangcp.spring.core.io.Resource;
 import com.github.kuangcp.spring.util.Assert;
-import com.github.kuangcp.spring.util.ClassUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -11,6 +10,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ClassUtils;
 
 /**
  * @author https://github.com/kuangcp on 2019-12-14 17:06
@@ -28,7 +28,6 @@ public class PackageResourceLoader {
     Assert.notNull(classLoader, "ResourceLoader must not be null");
     this.classLoader = classLoader;
   }
-
 
   public ClassLoader getClassLoader() {
     return this.classLoader;
@@ -48,7 +47,6 @@ public class PackageResourceLoader {
       result[i++] = new FileSystemResource(file);
     }
     return result;
-
   }
 
   protected Set<File> retrieveMatchingFiles(File rootDir) throws IOException {
@@ -110,7 +108,6 @@ public class PackageResourceLoader {
       } else {
         result.add(content);
       }
-
     }
   }
 }

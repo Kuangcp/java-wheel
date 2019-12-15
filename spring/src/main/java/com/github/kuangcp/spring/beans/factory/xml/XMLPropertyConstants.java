@@ -15,4 +15,7 @@ public interface XMLPropertyConstants {
   String CONSTRUCTOR_ARG_ELEMENT = "constructor-arg";
   String TYPE_ATTRIBUTE = "type";
 
+  String BEANS_NAMESPACE_URI = "http://www.springframework.org/schema/beans";
+  String CONTEXT_NAMESPACE_URI = "http://www.springframework.org/schema/context";
+  String BASE_PACKAGE_ATTRIBUTE = "base-package";
 }

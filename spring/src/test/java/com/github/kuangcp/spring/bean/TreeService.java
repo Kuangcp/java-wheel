@@ -1,6 +1,6 @@
 package com.github.kuangcp.spring.bean;
 
-import com.github.kuangcp.spring.annotation.Autowired;
+import com.github.kuangcp.spring.beans.annotation.Autowired;
 import com.github.kuangcp.spring.stereotype.Component;
 import lombok.AllArgsConstructor;
 import lombok.Data;
