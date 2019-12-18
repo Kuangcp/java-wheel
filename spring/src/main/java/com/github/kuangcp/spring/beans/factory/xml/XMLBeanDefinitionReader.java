@@ -47,7 +47,7 @@ public class XMLBeanDefinitionReader {
   }
 
   @SuppressWarnings("unchecked")
-  public void loadDefinition(Resource resource) {
+  public void loadBeanDefinitions(Resource resource) {
     InputStream in = null;
     try {
       in = resource.getInputStream();

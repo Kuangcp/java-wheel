@@ -3,7 +3,7 @@ package com.github.kuangcp.spring.beans.factory.support;
 import com.github.kuangcp.aop.util.ClassUtil;
 import com.github.kuangcp.spring.beans.BeanDefinition;
 import com.github.kuangcp.spring.beans.PropertyValue;
-import com.github.kuangcp.spring.beans.exception.BeanCreateException;
+import com.github.kuangcp.spring.beans.exception.BeanCreationException;
 import com.github.kuangcp.spring.beans.factory.config.ConfigurableBeanFactory;
 import com.github.kuangcp.spring.beans.factory.config.DependencyDescriptor;
 import java.lang.reflect.Constructor;
@@ -69,7 +69,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
         BeanUtils.setProperty(bean, propertyName, resolvedValue);
       }
     } catch (Exception e) {
-      throw new BeanCreateException("failed to create bean: " + definition.getClassName());
+      throw new BeanCreationException("failed to create bean: " + definition.getClassName());
     }
   }
 

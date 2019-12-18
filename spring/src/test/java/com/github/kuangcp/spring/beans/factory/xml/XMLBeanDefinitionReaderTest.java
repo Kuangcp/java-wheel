@@ -17,7 +17,7 @@ public class XMLBeanDefinitionReaderTest {
     DefaultBeanFactory factory = new DefaultBeanFactory();
     XMLBeanDefinitionReader reader = new XMLBeanDefinitionReader(factory);
     Resource resource = new ClassPathResource("tree-with-annotation.xml");
-    reader.loadDefinition(resource);
+    reader.loadBeanDefinitions(resource);
     String annotation = Component.class.getName();
 
     ClassPathBeanDefinitionScannerTest.assertBeanDefinition(factory, annotation);

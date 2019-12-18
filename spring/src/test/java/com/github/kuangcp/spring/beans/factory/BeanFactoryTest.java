@@ -34,7 +34,7 @@ public class BeanFactoryTest {
 
   @Test
   public void testGetBean() {
-    reader.loadDefinition(new ClassPathResource("tree.xml"));
+    reader.loadBeanDefinitions(new ClassPathResource("tree.xml"));
 
     BeanDefinition definition = factory.getBeanDefinition("treeService");
     assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.bean.TreeService"));
@@ -45,7 +45,7 @@ public class BeanFactoryTest {
   @Test
   public void testInvalidXML() {
     try {
-      reader.loadDefinition(new ClassPathResource("tree-invalid.xml"));
+      reader.loadBeanDefinitions(new ClassPathResource("tree-invalid.xml"));
     } catch (BeanDefinitionParseException e) {
       return;
     }
@@ -55,7 +55,7 @@ public class BeanFactoryTest {
   
   @Test
   public void testGetBeanWithScope() throws Exception {
-    reader.loadDefinition(new ClassPathResource("tree.xml"));
+    reader.loadBeanDefinitions(new ClassPathResource("tree.xml"));
     BeanDefinition definition = factory.getBeanDefinition("treeService");
     assertTrue(definition.isSingleton());
     assertFalse(definition.isPrototype());

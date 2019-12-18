@@ -33,7 +33,7 @@ public class BeanDefinitionTest {
 
   @Test
   public void testGetBean() {
-    reader.loadDefinition(new ClassPathResource("tree-with-property.xml"));
+    reader.loadBeanDefinitions(new ClassPathResource("tree-with-property.xml"));
 
     BeanDefinition definition = factory.getBeanDefinition("treeService");
     assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.bean.TreeService"));
@@ -52,7 +52,7 @@ public class BeanDefinitionTest {
   
   @Test
   public void testConstructorArgs() throws Exception {
-    reader.loadDefinition(new ClassPathResource("tree-with-constructor.xml"));
+    reader.loadBeanDefinitions(new ClassPathResource("tree-with-constructor.xml"));
 
     BeanDefinition definition = factory.getBeanDefinition("treeService");
     assertThat(definition.getClassName(), equalTo("com.github.kuangcp.spring.bean.TreeService"));

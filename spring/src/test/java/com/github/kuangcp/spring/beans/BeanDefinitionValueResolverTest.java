@@ -28,7 +28,7 @@ public class BeanDefinitionValueResolverTest {
 
   @Test
   public void testGetBean() {
-    reader.loadDefinition(new ClassPathResource("tree-with-property.xml"));
+    reader.loadBeanDefinitions(new ClassPathResource("tree-with-property.xml"));
     BeanDefinitionValueResolver valueResolver = new BeanDefinitionValueResolver(factory);
 
     RuntimeBeanReference ref = new RuntimeBeanReference("treeDao");

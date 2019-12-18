@@ -20,7 +20,7 @@ public class DependencyDescriptorTest {
     DefaultBeanFactory factory = new DefaultBeanFactory();
     XMLBeanDefinitionReader reader = new XMLBeanDefinitionReader(factory);
     Resource resource = new ClassPathResource("tree-with-annotation.xml");
-    reader.loadDefinition(resource);
+    reader.loadBeanDefinitions(resource);
 
     Field f = TreeService.class.getDeclaredField("treeDao");
     DependencyDescriptor descriptor = new DependencyDescriptor(f, true);

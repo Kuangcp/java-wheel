@@ -3,7 +3,7 @@ package com.github.kuangcp.spring.beans.factory.support;
 import com.github.kuangcp.spring.beans.BeanDefinition;
 import com.github.kuangcp.spring.beans.ConstructorArgument;
 import com.github.kuangcp.spring.beans.ConstructorArgument.ValueHolder;
-import com.github.kuangcp.spring.beans.exception.BeanCreateException;
+import com.github.kuangcp.spring.beans.exception.BeanCreationException;
 import com.github.kuangcp.spring.beans.factory.config.ConfigurableBeanFactory;
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -29,7 +29,7 @@ public class ConstructorResolver {
     try {
       beanClass = this.beanFactory.getBeanClassLoader().loadClass(definition.getClassName());
     } catch (ClassNotFoundException e) {
-      throw new BeanCreateException(
+      throw new BeanCreationException(
           definition.getId() + " instantiation of bean failed, can't load class ");
     }
     Constructor<?>[] candidates = beanClass.getConstructors();
@@ -52,13 +52,13 @@ public class ConstructorResolver {
     }
 
     if (Objects.isNull(constructor)) {
-      throw new BeanCreateException(definition.getId() + " can't find correspond constructor");
+      throw new BeanCreationException(definition.getId() + " can't find correspond constructor");
     }
 
     try {
       return constructor.newInstance(args);
     } catch (Exception e) {
-      throw new BeanCreateException("can't find a create instance using " + constructor);
+      throw new BeanCreationException("can't find a create instance using " + constructor);
     }
   }
 
