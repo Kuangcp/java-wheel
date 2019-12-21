@@ -24,16 +24,12 @@ public class AutowiredFieldElement extends InjectionElement {
 
   @Override
   public void inject(Object target) {
-
     Field field = this.getField();
     try {
-
       DependencyDescriptor desc = new DependencyDescriptor(field, this.required);
-
       Object value = factory.resolveDependency(desc);
 
       if (value != null) {
-
         ReflectionUtils.makeAccessible(field);
         field.set(target, value);
       }

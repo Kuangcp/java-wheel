@@ -18,6 +18,5 @@ public class TreeService {
   @Autowired
   private TreeDao treeDao;
 
-  @Autowired
   private String version;
 }

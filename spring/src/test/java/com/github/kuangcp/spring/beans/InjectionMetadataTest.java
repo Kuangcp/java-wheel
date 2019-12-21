@@ -19,6 +19,9 @@ import org.junit.Test;
  */
 public class InjectionMetadataTest {
 
+  /**
+   * 测试 注入Bean到目标对象的成员属性上
+   */
   @Test
   public void testInjection() throws Exception {
     DefaultBeanFactory factory = new DefaultBeanFactory();
@@ -30,14 +33,16 @@ public class InjectionMetadataTest {
     List<InjectionElement> elements = new ArrayList<>();
 
     {
-      Field f = TreeService.class.getDeclaredField("treeDao");
-      InjectionElement injectionElem = new AutowiredFieldElement(f, true, factory);
-      elements.add(injectionElem);
+      Field field = TreeService.class.getDeclaredField("treeDao");
+      InjectionElement element = new AutowiredFieldElement(field, true, factory);
+      elements.add(element);
     }
 
     InjectionMetadata metadata = new InjectionMetadata(clz, elements);
-    TreeService petStore = new TreeService();
-    metadata.inject(petStore);
-    Assert.assertNotNull(petStore.getTreeDao());
+    TreeService service = new TreeService();
+
+    metadata.inject(service);
+
+    Assert.assertNotNull(service.getTreeDao());
   }
 }

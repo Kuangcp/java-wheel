@@ -10,6 +10,9 @@ public class InjectionMetadata {
 
   private final Class<?> targetClass;
 
+  /**
+   * 需要被注入的成员属性的Bean
+   */
   private Collection<InjectionElement> injectionElements;
 
   public InjectionMetadata(Class<?> targetClass, List<InjectionElement> injectionElements) {
@@ -21,6 +24,12 @@ public class InjectionMetadata {
     return injectionElements;
   }
 
+  /**
+   * 通过 target 成员属性 找到是否有已经注册的 InjectionElement
+   * 并利用 InjectionElement内factory属性解析实例化Bean 实现反射注入
+   *
+   * @param target 被注入属性的对象
+   */
   public void inject(Object target) {
     if (injectionElements == null || injectionElements.isEmpty()) {
       return;

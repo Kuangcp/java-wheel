@@ -9,6 +9,10 @@ import java.lang.reflect.Member;
 public abstract class InjectionElement {
 
   protected Member member;
+
+  /**
+   * 接口越小越好 用于解析创建Bean
+   */
   protected AutowireCapableBeanFactory factory;
 
   InjectionElement(Member member, AutowireCapableBeanFactory factory) {
