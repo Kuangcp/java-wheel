@@ -14,18 +14,18 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
   private Map<String, Object> singletonObjects = new ConcurrentHashMap<>();
 
   @Override
-  public void registerSingleton(String beanId, Object singletonObj) {
-    Assert.notNull(beanId, "bean id may not be null");
-    Object oldObject = this.singletonObjects.get(beanId);
+  public void registerSingleton(String beanName, Object singletonObj) {
+    Assert.notNull(beanName, "beanName may not be null");
+    Object oldObject = this.singletonObjects.get(beanName);
     if (Objects.nonNull(oldObject)) {
       throw new IllegalStateException("Could not register object [" + singletonObj
-          + "] under bean id " + beanId + ", there is already exist " + oldObject);
+          + "] under bean id " + beanName + ", there is already exist " + oldObject);
     }
-    this.singletonObjects.put(beanId, singletonObj);
+    this.singletonObjects.put(beanName, singletonObj);
   }
 
   @Override
-  public Object getSingleton(String beanId) {
-    return this.singletonObjects.get(beanId);
+  public Object getSingleton(String beanName) {
+    return this.singletonObjects.get(beanName);
   }
 }

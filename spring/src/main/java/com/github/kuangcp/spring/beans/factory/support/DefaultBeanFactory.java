@@ -32,17 +32,17 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
   private ClassLoader loader;
 
   @Override
-  public Object getBean(String beanId) {
-    BeanDefinition definition = this.getBeanDefinition(beanId);
+  public Object getBean(String beanName) {
+    BeanDefinition definition = this.getBeanDefinition(beanName);
     if (Objects.isNull(definition)) {
       return null;
     }
 
     if (definition.isSingleton()) {
-      Object bean = this.getSingleton(beanId);
+      Object bean = this.getSingleton(beanName);
       if (Objects.isNull(bean)) {
         bean = this.createBean(definition);
-        this.registerSingleton(beanId, bean);
+        this.registerSingleton(beanName, bean);
       }
 
       return bean;
@@ -52,9 +52,24 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
   }
 
   private Object createBean(BeanDefinition definition) {
-    Object bean = instantiateBean(definition);
+    Object bean = this.instantiateBean(definition);
     this.populateBean(bean, definition);
+    this.initializeBean(bean, definition);
     return bean;
+  }
+
+  private void initializeBean(Object bean, BeanDefinition definition) {
+    for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
+      if (beanPostProcessor != null) {
+        beanPostProcessor.beforeInitialization(bean, definition.getId());
+      }
+    }
+
+    for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
+      if (beanPostProcessor != null) {
+        beanPostProcessor.afterInitialization(bean, definition.getId());
+      }
+    }
   }
 
   private void populateBean(Object bean, BeanDefinition definition) {
@@ -102,7 +117,23 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
         log.warn("not define empty constructor");
         return null;
       }
-      return constructor.newInstance();
+
+      for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
+        if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+          ((InstantiationAwareBeanPostProcessor) beanPostProcessor)
+              .beforeInstantiation(target, definition.getId());
+        }
+      }
+
+      Object result = constructor.newInstance();
+
+      for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
+        if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+          ((InstantiationAwareBeanPostProcessor) beanPostProcessor)
+              .afterInstantiation(result, definition.getId());
+        }
+      }
+      return result;
     } catch (Exception e) {
       log.error("", e);
     }
@@ -110,13 +141,13 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
   }
 
   @Override
-  public BeanDefinition getBeanDefinition(String beanId) {
-    return this.definitionMap.get(beanId);
+  public BeanDefinition getBeanDefinition(String beanName) {
+    return this.definitionMap.get(beanName);
   }
 
   @Override
-  public void registerBeanDefinition(String beanId, BeanDefinition definition) {
-    this.definitionMap.put(beanId, definition);
+  public void registerBeanDefinition(String beanName, BeanDefinition definition) {
+    this.definitionMap.put(beanName, definition);
   }
 
   @Override

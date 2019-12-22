@@ -41,10 +41,17 @@
 1. 初始化
 1. BeanPostProcessor.afterInitialization()
 
-> 如何使用
+> 如何使用 BeanPostProcessor
 1. AbstractApplicationContext 里 创建 BeanPostProcessor
 1. ConfigurableBeanFactory 里往processor注入factory
 1. DefaultBeanFactory.populateBean() 中使用这些 processor
+
+> 处理循环依赖问题
+
+- DefaultSingletonBeanRegistry
+  - `singletonFactories` ： 进入实例化阶段的单例对象工厂的cache （三级缓存）
+  - `earlySingletonObjects` ：完成实例化但是尚未初始化的，提前暴光的单例对象的Cache （二级缓存）
+  - `singletonObjects`：完成初始化的单例对象的cache（一级缓存）
 
 ## v1.4
 - AOP

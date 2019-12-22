@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 public class RuntimeBeanReference {
 
-  private final String beanId;
+  private final String beanName;
 
-  public RuntimeBeanReference(String beanId) {
-    this.beanId = beanId;
+  public RuntimeBeanReference(String beanName) {
+    this.beanName = beanName;
   }
 }

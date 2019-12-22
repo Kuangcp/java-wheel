@@ -18,8 +18,8 @@ public class BeanDefinitionValueResolver {
   public Object resolverValueIfNecessary(Object value) {
     if (value instanceof RuntimeBeanReference) {
       RuntimeBeanReference ref = (RuntimeBeanReference) value;
-      String beanId = ref.getBeanId();
-      return this.beanFactory.getBean(beanId);
+      String beanName = ref.getBeanName();
+      return this.beanFactory.getBean(beanName);
     } else if (value instanceof TypedStringValue) {
       return ((TypedStringValue) value).getValue();
     } else {

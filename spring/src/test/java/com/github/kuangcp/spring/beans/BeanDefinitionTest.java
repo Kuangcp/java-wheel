@@ -61,7 +61,7 @@ public class BeanDefinitionTest {
     List<ValueHolder> valueHolders = argument.getValueHolders();
     assertThat(valueHolders.size(), equalTo(2));
     RuntimeBeanReference reference = (RuntimeBeanReference) valueHolders.get(0).getValue();
-    assertThat(reference.getBeanId(), equalTo("treeDao"));
+    assertThat(reference.getBeanName(), equalTo("treeDao"));
     TypedStringValue version  = (TypedStringValue) valueHolders.get(1).getValue();
     assertThat(version.getValue(), equalTo("version"));
   }

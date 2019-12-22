@@ -5,8 +5,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import com.github.kuangcp.spring.bean.TreeService;
+import com.github.kuangcp.spring.bean.loop.PlayerService;
 import com.github.kuangcp.spring.context.support.ClassPathXmlApplicationContext;
 import com.github.kuangcp.spring.context.support.FileSystemXmlApplicationContext;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -55,5 +57,15 @@ public class ApplicationContextTest {
     TreeService bean = (TreeService) context.getBean("treeService");
     assertNotNull(bean);
     assertNotNull(bean.getTreeDao());
+  }
+
+  @Ignore
+  @Test
+  public void testGetBeanWithLoop() throws Exception {
+    ApplicationContext context =
+        new ClassPathXmlApplicationContext("tree-with-loop.xml");
+    PlayerService bean = (PlayerService) context.getBean("playerService");
+    assertNotNull(bean);
+    assertNotNull(bean.getItemService());
   }
 }

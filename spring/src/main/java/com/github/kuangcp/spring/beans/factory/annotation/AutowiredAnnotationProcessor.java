@@ -14,13 +14,14 @@ import java.lang.reflect.Modifier;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
  * @author https://github.com/kuangcp on 2019-12-21 21:13
  */
-
+@Slf4j
 public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostProcessor {
 
   private AutowireCapableBeanFactory beanFactory;
@@ -93,26 +94,28 @@ public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostP
   }
 
   public Object beforeInitialization(Object bean, String beanName) throws BeansException {
-    //do nothing
+    log.debug("AutowiredAnnotationProcessor.beforeInitialization {}", beanName);
     return bean;
   }
 
   public Object afterInitialization(Object bean, String beanName) throws BeansException {
-    // do nothing
+    log.debug("AutowiredAnnotationProcessor.afterInitialization {}", beanName);
     return bean;
   }
 
   public Object beforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+    log.debug("AutowiredAnnotationProcessor.beforeInstantiation {}", beanName);
     return null;
   }
 
   public boolean afterInstantiation(Object bean, String beanName) throws BeansException {
-    // do nothing
+    log.debug("AutowiredAnnotationProcessor.afterInstantiation {}", beanName);
     return true;
   }
 
   public void postProcessPropertyValues(Object bean, String beanName) throws BeansException {
-    InjectionMetadata metadata = buildAutowiringMetadata(bean.getClass());
+    log.debug("AutowiredAnnotationProcessor.postProcessPropertyValues {}", beanName);
+    InjectionMetadata metadata = this.buildAutowiringMetadata(bean.getClass());
     try {
       metadata.inject(bean);
     } catch (Throwable ex) {

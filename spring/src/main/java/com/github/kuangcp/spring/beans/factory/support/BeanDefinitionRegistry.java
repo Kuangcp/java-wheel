@@ -7,7 +7,7 @@ import com.github.kuangcp.spring.beans.BeanDefinition;
  */
 public interface BeanDefinitionRegistry {
 
-  BeanDefinition getBeanDefinition(String beanId);
+  BeanDefinition getBeanDefinition(String beanName);
 
-  void registerBeanDefinition(String beanId, BeanDefinition definition);
+  void registerBeanDefinition(String beanName, BeanDefinition definition);
 }
