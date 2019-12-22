@@ -94,27 +94,27 @@ public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostP
   }
 
   public Object beforeInitialization(Object bean, String beanName) throws BeansException {
-    log.debug("AutowiredAnnotationProcessor.beforeInitialization {}", beanName);
+    log.debug("初始化 前 {}", beanName);
     return bean;
   }
 
   public Object afterInitialization(Object bean, String beanName) throws BeansException {
-    log.debug("AutowiredAnnotationProcessor.afterInitialization {}", beanName);
+    log.debug("初始化 后 {}", beanName);
     return bean;
   }
 
   public Object beforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
-    log.debug("AutowiredAnnotationProcessor.beforeInstantiation {}", beanName);
+    log.debug("实例化 前 {}", beanName);
     return null;
   }
 
   public boolean afterInstantiation(Object bean, String beanName) throws BeansException {
-    log.debug("AutowiredAnnotationProcessor.afterInstantiation {}", beanName);
+    log.debug("实例化 后 {}", beanName);
     return true;
   }
 
   public void postProcessPropertyValues(Object bean, String beanName) throws BeansException {
-    log.debug("AutowiredAnnotationProcessor.postProcessPropertyValues {}", beanName);
+    log.debug("postProcessPropertyValues {}", beanName);
     InjectionMetadata metadata = this.buildAutowiringMetadata(bean.getClass());
     try {
       metadata.inject(bean);

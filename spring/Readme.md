@@ -48,8 +48,30 @@
 
 > 处理循环依赖问题, 这里求简单就只用了提前曝光的设计
 
-- DefaultSingletonBeanRegistry
-  - `singletonFactories` ： 进入实例化阶段的单例对象工厂的cache （二级缓存的工厂类 视作三级缓存）
+```java
+	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+		Object singletonObject = this.singletonObjects.get(beanName);
+
+		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
+			synchronized (this.singletonObjects) {
+				singletonObject = this.earlySingletonObjects.get(beanName);
+
+				// 如果二级缓存获取不到就去对应的工厂方法构建出来 并加入二级缓存
+				if (singletonObject == null && allowEarlyReference) {
+					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
+					if (singletonFactory != null) {
+						singletonObject = singletonFactory.getObject();
+						this.earlySingletonObjects.put(beanName, singletonObject);
+						this.singletonFactories.remove(beanName);
+					}
+				}
+			}
+		}
+		return singletonObject;
+	}
+```
+- DefaultSingletonBeanRegistry 类
+  - `singletonFactories` ： 进入实例化阶段的单例对象工厂的cache （二级缓存的工厂类）
   - `earlySingletonObjects` ：完成实例化但是尚未初始化的，提前曝光的单例对象的Cache （二级缓存）
   - `singletonObjects`：完成初始化的单例对象的cache（一级缓存）
 
