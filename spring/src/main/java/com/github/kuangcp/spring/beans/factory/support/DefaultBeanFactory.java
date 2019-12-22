@@ -61,13 +61,13 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
   private void initializeBean(Object bean, BeanDefinition definition) {
     for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
       if (beanPostProcessor != null) {
-        beanPostProcessor.beforeInitialization(bean, definition.getId());
+        beanPostProcessor.beforeInitialization(bean, definition.getBeanName());
       }
     }
 
     for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
       if (beanPostProcessor != null) {
-        beanPostProcessor.afterInitialization(bean, definition.getId());
+        beanPostProcessor.afterInitialization(bean, definition.getBeanName());
       }
     }
   }
@@ -77,7 +77,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
     for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
       if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
         ((InstantiationAwareBeanPostProcessor) beanPostProcessor)
-            .postProcessPropertyValues(bean, definition.getId());
+            .postProcessPropertyValues(bean, definition.getBeanName());
       }
     }
 
@@ -103,6 +103,9 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
   }
 
   private Object instantiateBean(BeanDefinition definition) {
+    String beanName = definition.getBeanName();
+    addCurrentlyInCreation(beanName);
+
     if (definition.hasConstructorValue()) {
       ConstructorResolver constructorResolver = new ConstructorResolver(this);
       return constructorResolver.autowireConstructor(definition);
@@ -121,7 +124,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
       for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
         if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
           ((InstantiationAwareBeanPostProcessor) beanPostProcessor)
-              .beforeInstantiation(target, definition.getId());
+              .beforeInstantiation(target, beanName);
         }
       }
 
@@ -130,9 +133,11 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
       for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
         if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
           ((InstantiationAwareBeanPostProcessor) beanPostProcessor)
-              .afterInstantiation(result, definition.getId());
+              .afterInstantiation(result, beanName);
         }
       }
+
+      this.addEarlyInCreation(beanName, result);
       return result;
     } catch (Exception e) {
       log.error("", e);
@@ -180,7 +185,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
       this.resolveBeanClass(bd);
       Class<?> beanClass = bd.getBeanClass();
       if (typeToMatch.isAssignableFrom(beanClass)) {
-        return this.getBean(bd.getId());
+        return this.getBean(bd.getBeanName());
       }
     }
     return null;

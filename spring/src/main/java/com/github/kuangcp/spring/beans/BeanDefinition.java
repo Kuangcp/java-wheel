@@ -11,7 +11,7 @@ public interface BeanDefinition {
   String SCOPE_PROTOTYPE = "prototype";
   String SCOPE_DEFAULT = "";
 
-  String getId();
+  String getBeanName();
 
   String getClassName();
 

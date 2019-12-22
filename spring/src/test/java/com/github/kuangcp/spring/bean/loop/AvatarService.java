@@ -5,15 +5,12 @@ import com.github.kuangcp.spring.stereotype.Component;
 import lombok.Data;
 
 /**
- * @author https://github.com/kuangcp on 2019-12-22 11:48
+ * @author https://github.com/kuangcp on 2019-12-22 19:27
  */
 @Data
 @Component
-public class PlayerService {
+public class AvatarService {
 
   @Autowired
-  private ItemService itemService;
-
-  @Autowired
-  private AvatarService avatarService;
+  private PlayerService playerService;
 }

@@ -37,7 +37,7 @@ public class ClassPathBeanDefinitionScanner {
       Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
       for (BeanDefinition candidate : candidates) {
         beanDefinitions.add(candidate);
-        registry.registerBeanDefinition(candidate.getId(), candidate);
+        registry.registerBeanDefinition(candidate.getBeanName(), candidate);
       }
     }
     return beanDefinitions;
@@ -56,7 +56,8 @@ public class ClassPathBeanDefinitionScanner {
                 new ScannedGenericBeanDefinition(metadataReader.getAnnotationMetadata());
 
             String beanName = this.beanNameGenerator.generateBeanName(definition, this.registry);
-            definition.setId(beanName);
+            definition.setBeanName(beanName);
+            definition.setSingleton(true);
             candidates.add(definition);
           }
         } catch (Throwable ex) {
