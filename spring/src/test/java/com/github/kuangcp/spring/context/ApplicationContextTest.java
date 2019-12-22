@@ -49,7 +49,7 @@ public class ApplicationContextTest {
   }
 
   @Test
-  public void testGetBeanWithAnnotation() throws Exception {
+  public void testGetBeanViaAnnotation() throws Exception {
     ApplicationContext context =
         new ClassPathXmlApplicationContext("tree-with-annotation.xml");
     TreeService bean = (TreeService) context.getBean("treeService");

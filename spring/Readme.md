@@ -21,7 +21,30 @@
   1. 使用 ASM 读取 resource 的注解
   1. 创建 BeanDefinition
   1. Bean 注入
-- Bean 生命周期管理
+    1. AutowiredAnnotationProcessor 将Class转换成 InjectMetadata
+    1. 调用 InjectMetadata inject() 完成注入， 因为 AutowireCapableBeanFactory 的 resolveDependency()
+
+- Bean 生命周期管理 (自定义的方法都可以看作 Hook 也就是 CallBack 回调)
+  1. `实例化` 通过无参或含参构造器实例化Bean
+  1. `初始化` 调用用户自定义初始化方法
+  1. `运行`
+  1. `销毁` DisposableBean.destroy() 调用自定义的销毁方法
+
+
+1. InstantiationAwareBeanPostProcessor.beforeInstantiation()
+1. 实例化
+1. InstantiationAwareBeanPostProcessor.afterInstantiation()
+1. InstantiationAwareBeanPostProcessor.postProcessPropertyValues() 实现Autowired
+1. BeanNameAware.setBeanName()
+1. BeanFactoryAware.setBeanFactory()
+1. BeanPostProcessor.beforeInitialization()
+1. 初始化
+1. BeanPostProcessor.afterInitialization()
+
+> 如何使用
+1. AbstractApplicationContext 里 创建 BeanPostProcessor
+1. ConfigurableBeanFactory 里往processor注入factory
+1. DefaultBeanFactory.populateBean() 中使用这些 processor
 
 ## v1.4
 - AOP

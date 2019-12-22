@@ -1,6 +1,8 @@
 package com.github.kuangcp.spring.context.support;
 
 import com.github.kuangcp.aop.util.ClassUtil;
+import com.github.kuangcp.spring.beans.factory.annotation.AutowiredAnnotationProcessor;
+import com.github.kuangcp.spring.beans.factory.config.ConfigurableBeanFactory;
 import com.github.kuangcp.spring.beans.factory.support.DefaultBeanFactory;
 import com.github.kuangcp.spring.beans.factory.xml.XMLBeanDefinitionReader;
 import com.github.kuangcp.spring.context.ApplicationContext;
@@ -24,7 +26,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     Resource source = this.getResourceByPath(configFile);
     reader.loadBeanDefinitions(source);
     factory.setBeanClassLoader(this.getBeanClassLoader());
+    registerBeanPostProcessors(factory);
   }
+
 
   // delegate
   @Override
@@ -38,5 +42,11 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
   public ClassLoader getBeanClassLoader() {
     return Objects.nonNull(this.loader) ? this.loader : ClassUtil.getDefaultClassLoader();
+  }
+
+  protected void registerBeanPostProcessors(ConfigurableBeanFactory beanFactory) {
+    AutowiredAnnotationProcessor postProcessor = new AutowiredAnnotationProcessor();
+    postProcessor.setBeanFactory(beanFactory);
+    beanFactory.addBeanPostProcessor(postProcessor);
   }
 }

@@ -4,9 +4,13 @@ import com.github.kuangcp.aop.util.ClassUtil;
 import com.github.kuangcp.spring.beans.BeanDefinition;
 import com.github.kuangcp.spring.beans.PropertyValue;
 import com.github.kuangcp.spring.beans.exception.BeanCreationException;
+import com.github.kuangcp.spring.beans.factory.config.BeanPostProcessor;
 import com.github.kuangcp.spring.beans.factory.config.ConfigurableBeanFactory;
 import com.github.kuangcp.spring.beans.factory.config.DependencyDescriptor;
+import com.github.kuangcp.spring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -24,6 +28,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
     implements ConfigurableBeanFactory, BeanDefinitionRegistry {
 
   private Map<String, BeanDefinition> definitionMap = new ConcurrentHashMap<>();
+  private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
   private ClassLoader loader;
 
   @Override
@@ -53,6 +58,15 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
   }
 
   private void populateBean(Object bean, BeanDefinition definition) {
+    // annotation inject
+    for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
+      if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+        ((InstantiationAwareBeanPostProcessor) beanPostProcessor)
+            .postProcessPropertyValues(bean, definition.getId());
+      }
+    }
+
+    // field inject
     Map<String, PropertyValue> propertyValueMap = definition.getPropertyValueMap();
     if (Objects.isNull(propertyValueMap) || propertyValueMap.isEmpty()) {
       return;
@@ -113,6 +127,16 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
   @Override
   public ClassLoader getBeanClassLoader() {
     return Objects.nonNull(this.loader) ? this.loader : ClassUtil.getDefaultClassLoader();
+  }
+
+  @Override
+  public void addBeanPostProcessor(BeanPostProcessor postProcessor) {
+    beanPostProcessors.add(postProcessor);
+  }
+
+  @Override
+  public List<BeanPostProcessor> getBeanPostProcessors() {
+    return beanPostProcessors;
   }
 
   /**
