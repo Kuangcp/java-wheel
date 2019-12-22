@@ -5,5 +5,5 @@ package com.github.kuangcp.spring.beans.factory;
  */
 public interface BeanFactory {
 
-  Object getBean(String beanId);
+  Object getBean(String beanName);
 }

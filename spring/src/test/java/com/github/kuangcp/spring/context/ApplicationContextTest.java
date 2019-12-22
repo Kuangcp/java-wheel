@@ -5,6 +5,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import com.github.kuangcp.spring.bean.TreeService;
+import com.github.kuangcp.spring.bean.loop.CurrencyService;
+import com.github.kuangcp.spring.bean.loop.ItemService;
+import com.github.kuangcp.spring.bean.loop.PlayerService;
 import com.github.kuangcp.spring.context.support.ClassPathXmlApplicationContext;
 import com.github.kuangcp.spring.context.support.FileSystemXmlApplicationContext;
 import org.junit.Test;
@@ -55,5 +58,26 @@ public class ApplicationContextTest {
     TreeService bean = (TreeService) context.getBean("treeService");
     assertNotNull(bean);
     assertNotNull(bean.getTreeDao());
+  }
+
+  @Test
+  public void testGetBeanWithLoop() throws Exception {
+    ApplicationContext context =
+        new ClassPathXmlApplicationContext("tree-with-loop.xml");
+
+    CurrencyService currencyService = (CurrencyService) context.getBean("currencyService");
+    assertNotNull(currencyService);
+    assertNotNull(currencyService.getItemService());
+
+    PlayerService playerService = (PlayerService) context.getBean("playerService");
+    assertNotNull(playerService);
+    assertNotNull(playerService.getItemService());
+
+    ItemService itemService = (ItemService) context.getBean("itemService");
+    assertNotNull(itemService);
+    assertNotNull(itemService.getPlayerService());
+    assertThat(itemService, equalTo(playerService.getItemService()));
+
+
   }
 }

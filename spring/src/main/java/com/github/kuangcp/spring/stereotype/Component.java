@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 public @interface Component {
 
   /**
-   * Bean Id
+   * Bean name
    */
   String value() default "";
 }

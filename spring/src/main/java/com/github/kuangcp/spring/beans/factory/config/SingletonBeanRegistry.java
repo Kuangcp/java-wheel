@@ -5,7 +5,7 @@ package com.github.kuangcp.spring.beans.factory.config;
  */
 public interface SingletonBeanRegistry {
 
-  void registerSingleton(String beanId, Object singletonObj);
+  void registerSingleton(String beanName, Object singletonObj);
 
-  Object getSingleton(String beanId);
+  Object getSingleton(String beanName);
 }

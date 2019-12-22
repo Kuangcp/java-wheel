@@ -18,7 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GenericBeanDefinition implements BeanDefinition {
 
-  private String id;
+  private String beanName;
   private String className;
   private Class<?> beanClass;
   private boolean singleton;
@@ -28,7 +28,7 @@ public class GenericBeanDefinition implements BeanDefinition {
   private ConstructorArgument constructorArgument = new ConstructorArgument();
 
   public GenericBeanDefinition(String id, String className) {
-    this.id = id;
+    this.beanName = id;
     this.className = className;
   }
 

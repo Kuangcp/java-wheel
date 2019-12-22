@@ -30,7 +30,7 @@ public class ConstructorResolver {
       beanClass = this.beanFactory.getBeanClassLoader().loadClass(definition.getClassName());
     } catch (ClassNotFoundException e) {
       throw new BeanCreationException(
-          definition.getId() + " instantiation of bean failed, can't load class ");
+          definition.getBeanName() + " instantiation of bean failed, can't load class ");
     }
     Constructor<?>[] candidates = beanClass.getConstructors();
 
@@ -52,7 +52,7 @@ public class ConstructorResolver {
     }
 
     if (Objects.isNull(constructor)) {
-      throw new BeanCreationException(definition.getId() + " can't find correspond constructor");
+      throw new BeanCreationException(definition.getBeanName() + " can't find correspond constructor");
     }
 
     try {
