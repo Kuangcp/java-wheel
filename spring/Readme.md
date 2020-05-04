@@ -42,11 +42,22 @@
 1. BeanPostProcessor.afterInitialization()
 
 > 如何使用 BeanPostProcessor
-1. AbstractApplicationContext 里 创建 BeanPostProcessor
-1. ConfigurableBeanFactory 里往processor注入factory
+1. AbstractApplicationContext 里创建 BeanPostProcessor
+1. ConfigurableBeanFactory 里往 processor 注入 factory
 1. DefaultBeanFactory.populateBean() 中使用这些 processor
 
-> 处理循环依赖问题, 这里求简单就只用了提前曝光的设计
+> 处理循环依赖问题 [4.2之前不支持构造器循环注入的解决方案](https://www.baeldung.com/circular-dependencies-in-spring)
+1. 首先明确注入方式有: 1. set方式 2. 构造器
+1. 这里只用了提前曝光的设计(只有两层) 仅适用于 set方法形式的注入
+1. 处理构造器注入的形式
+  - 使用 ObjenesisCglibAopProxy 生成代理(由第三方打破死循环) 解决构造器 循环依赖 [objenesis](http://objenesis.org/)
+
+> 三级缓存处理set方式循环依赖
+- DefaultSingletonBeanRegistry 类
+  1. `singletonFactories` ： 进入实例化阶段的单例对象工厂的cache （二级缓存的工厂类）
+    - 存在的意义 延迟初始化 提高性能？
+  1. `earlySingletonObjects` ：完成实例化但是尚未初始化的，提前曝光的单例对象的Cache （二级缓存）
+  1. `singletonObjects`：完成初始化的单例对象的cache（一级缓存）
 
 ```java
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
@@ -70,10 +81,6 @@
 		return singletonObject;
 	}
 ```
-- DefaultSingletonBeanRegistry 类
-  - `singletonFactories` ： 进入实例化阶段的单例对象工厂的cache （二级缓存的工厂类）
-  - `earlySingletonObjects` ：完成实例化但是尚未初始化的，提前曝光的单例对象的Cache （二级缓存）
-  - `singletonObjects`：完成初始化的单例对象的cache（一级缓存）
 
 ## v1.4
 - AOP

@@ -1,0 +1,5 @@
+def jreHome = System.getProperty("java.home")
+
+dependencies {
+  implementation(files(jreHome + '../../lib/tools.jar'))
+}

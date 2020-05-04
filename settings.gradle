@@ -1,4 +1,5 @@
 rootProject.name = 'JavaWheel'
 include(
-    'spring'
+    'spring',
+    'lombok'
 )
