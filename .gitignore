@@ -11,3 +11,8 @@ out/
 *.class
 *.test
 *.log
+
+target/
+*.class
+*.jar
+
