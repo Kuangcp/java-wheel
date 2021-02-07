@@ -54,10 +54,10 @@
 
 > 三级缓存处理set方式循环依赖
 - DefaultSingletonBeanRegistry 类
-  1. `singletonFactories` ： 进入实例化阶段的单例对象工厂的cache （二级缓存的工厂类）
-    - 存在的意义 延迟初始化 提高性能？
-  1. `earlySingletonObjects` ：完成实例化但是尚未初始化的，提前曝光的单例对象的Cache （二级缓存）
-  1. `singletonObjects`：完成初始化的单例对象的cache（一级缓存）
+  1. `singletonFactories`： 进入实例化阶段的单例对象工厂的cache （二级缓存的工厂类）
+    - 三级缓存 存在的意义: [参考：非要三级缓存么？](https://www.cnblogs.com/youzhibing/p/14337244.html)
+  1. `earlySingletonObjects`： 完成实例化但是尚未初始化的，提前曝光的单例对象的Cache （二级缓存）
+  1. `singletonObjects`： 完成初始化的单例对象的cache（一级缓存）
 
 ```java
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {

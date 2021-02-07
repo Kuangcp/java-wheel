@@ -2,11 +2,14 @@
 
 [手写Lombok](https://www.cnblogs.com/vipstone/p/12597756.html)
 
+> Use
+
 1. javac -cp $JAVA_HOME/lib/tools.jar Getter* -d .
 1. javac -processor com.github.kuangcp.GetterProcessor Config.java
 1. javap -p Config.class
 
-- 实现步骤：
+> 实现步骤：
+
 1. 利用 roundEnv 的 getElementsAnnotatedWith 方法过滤出被Getter这个注解标记的类，并存入set
 1. 遍历这个set里的每一个元素，并生成 jCTree 这个语法树
 1. 创建一个 TreeTranslator，并重写其中的 visitClassDef 方法，这个方法处理遍历语法树得到的类定义部分 jcClassDecl
