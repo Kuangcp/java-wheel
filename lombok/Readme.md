@@ -1,9 +1,10 @@
+# Lombok轮子
+
 [Lombok原理分析](https://blog.mythsman.com/post/5d2c11c767f841464434a3bf/)
 
 [手写Lombok](https://www.cnblogs.com/vipstone/p/12597756.html)
 
-> Use
-
+> 运行:
 1. javac -cp $JAVA_HOME/lib/tools.jar Getter* -d .
 1. javac -processor com.github.kuangcp.GetterProcessor Config.java
 1. javap -p Config.class

@@ -60,6 +60,7 @@ public class ApplicationContextTest {
     assertNotNull(bean.getTreeDao());
   }
 
+  // 属性循环依赖
   @Test
   public void testGetBeanWithLoop() throws Exception {
     ApplicationContext context =
@@ -77,7 +78,9 @@ public class ApplicationContextTest {
     assertNotNull(itemService);
     assertNotNull(itemService.getPlayerService());
     assertThat(itemService, equalTo(playerService.getItemService()));
-
-
   }
+
+  // TODO 构造器循环依赖
+  //  https://www.baeldung.com/circular-dependencies-in-spring
+
 }
