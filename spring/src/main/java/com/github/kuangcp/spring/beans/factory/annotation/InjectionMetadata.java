@@ -13,7 +13,7 @@ public class InjectionMetadata {
   /**
    * 需要被注入的成员属性的Bean
    */
-  private Collection<InjectionElement> injectionElements;
+  private final Collection<InjectionElement> injectionElements;
 
   public InjectionMetadata(Class<?> targetClass, List<InjectionElement> injectionElements) {
     this.targetClass = targetClass;

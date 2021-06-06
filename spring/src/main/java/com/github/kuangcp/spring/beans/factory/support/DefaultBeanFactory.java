@@ -24,11 +24,12 @@ import org.apache.commons.beanutils.BeanUtils;
  */
 @Slf4j
 @NoArgsConstructor
-public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
+public class DefaultBeanFactory
+    extends DefaultSingletonBeanRegistry
     implements ConfigurableBeanFactory, BeanDefinitionRegistry {
 
-  private Map<String, BeanDefinition> definitionMap = new ConcurrentHashMap<>();
-  private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
+  private final Map<String, BeanDefinition> definitionMap = new ConcurrentHashMap<>();
+  private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
   private ClassLoader loader;
 
   @Override
