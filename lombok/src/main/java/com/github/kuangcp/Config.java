@@ -6,5 +6,5 @@ package com.github.kuangcp;
 @Getter
 public class Config {
 
-  private String min;
+    private String min;
 }

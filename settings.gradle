@@ -1,5 +1,0 @@
-rootProject.name = 'JavaWheel'
-include(
-    'spring',
-    'lombok'
-)

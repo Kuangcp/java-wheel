@@ -24,8 +24,8 @@
         <jackson.version>2.15.2</jackson.version>
     </properties>
 
+    <!--锁定版本-->
     <dependencyManagement>
-        <!--锁定版本-->
         <dependencies>
 
             <!--JDK11-->
